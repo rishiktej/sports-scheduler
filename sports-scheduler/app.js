@@ -190,22 +190,6 @@ app.get(
   }
 );
 
-app.post(
-  "/role",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (request, response) => {
-    const selectedRole = request.body.role;
-
-    if (selectedRole === "sport_organizer") {
-      response.redirect("/admin");
-    } else if (selectedRole === "player") {
-      response.redirect("/player");
-    } else {
-      // Handle invalid role selection
-      res.status(400).send("Invalid role selection");
-    }
-  }
-);
 app.get(
   "/admin",
   connectEnsureLogin.ensureLoggedIn(),

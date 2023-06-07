@@ -37,6 +37,41 @@
         .navbar-links a:hover {
             text-decoration: underline;
         }
+
+        /* Body styles */
+        body {
+            background-image: url("https://images.unsplash.com/photo-1684597624985-bed4150e1c1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=401&q=80");
+            background-size: cover;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            position:absolute;
+            margin-top: 70px;
+            margin-left:10px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .sports-list {
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+
+        .sports-list li {
+            margin-bottom: 10px;
+        }
+
+        .sports-list a {
+            color: #3182ce;
+            font-weight: bold;
+        }
+
+        .sports-list a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -47,17 +82,19 @@
             <a href="/" class="navbar-brand">Welcome</a>
             <div class="navbar-links">
                 <a href="/joinedsessions">Joined Sessions</a>
-                <a href="/signout">Sign Out</a>
+                <a href="/signout"
+                    class="fixed top-4 right-4 bg-white text-blue-600 px-4 py-2 rounded font-medium shadow hover:bg-blue-600 hover:text-white">Sign
+                    Out</a>
             </div>
         </nav>
 
         <% if (allsports.length> 0) { %>
             <h2 class="text-2xl text-red-900 mb-4">List of Sports:</h2>
-            <ul class="list-disc pl-8">
+            <ul class="sports-list">
                 <% let displayedSports=[]; %>
                     <% allsports.forEach(function(sport) { %>
                         <% if (!displayedSports.includes(sport.sport_name)) { %>
-                            <li class="mb-2">
+                            <li>
                                 <a href="/sessions?sport=<%= sport.sport_name %>" class="text-blue-500 hover:underline">
                                     <%= sport.sport_name %>
                                 </a>
