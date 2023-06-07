@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+
+    <title>Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+        .slideshow-container {
+            position: relative;
+            height: 100%;
+        }
+
+        .slideshow-image {
+            display: none;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-start">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="w-full p-4">
+        <h1 class="text-3xl font-bold mb-5">Welcome <%= username %>!</h1>
+        <p class="mb-4">Please select your role:</p>
+
+        <form action="/role" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" name="role" value="sport_organizer"
+                class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium mb-4">Sport Organizer</button>
+            <button type="submit" name="role" value="player"
+                class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium ml-4 mb-4">Player</button>
+        </form>
+    </div>
+
+    <div class="slideshow-container mt-4 ml-20 ">
+        <img class="slideshow-image"
+            src="https://images.unsplash.com/photo-1572181804423-c5df037abf13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=600&q=60"
+            alt="Slideshow Image 1">
+        <img class="slideshow-image"
+            src="https://images.unsplash.com/flagged/photo-1576972405668-2d020a01cbfa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHRlbm5pc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60"
+            alt="Slideshow Image 2">
+        <img class="slideshow-image"
+            src="https://images.unsplash.com/photo-1589801258579-18e091f4ca26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGNyaWNrZXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60"
+            alt="Slideshow Image 3">
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('.slideshow-image');
+        let currentIndex = 0;
+
+        setInterval(() => {
+            images[currentIndex].style.display = 'none';
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].style.display = 'block';
+        }, 3000);
+    </script>
+</body>
+
+</html>

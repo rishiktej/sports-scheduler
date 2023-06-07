@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+        /* Navigation bar styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f3f3f3;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            text-decoration: none;
+        }
+
+        .navbar-links a {
+            margin-left: 10px;
+            color: #333333;
+            text-decoration: none;
+        }
+
+        .navbar-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="container mx-auto p-8">
+        <nav class="navbar">
+            <a href="/" class="navbar-brand">Welcome</a>
+            <div class="navbar-links">
+                <a href="/joinedsessions">Joined Sessions</a>
+                <a href="/signout">Sign Out</a>
+            </div>
+        </nav>
+
+        <% if (allsports.length> 0) { %>
+            <h2 class="text-2xl text-red-900 mb-4">List of Sports:</h2>
+            <ul class="list-disc pl-8">
+                <% let displayedSports=[]; %>
+                    <% allsports.forEach(function(sport) { %>
+                        <% if (!displayedSports.includes(sport.sport_name)) { %>
+                            <li class="mb-2">
+                                <a href="/sessions?sport=<%= sport.sport_name %>" class="text-blue-500 hover:underline">
+                                    <%= sport.sport_name %>
+                                </a>
+                            </li>
+                            <% displayedSports.push(sport.sport_name); %>
+                                <% } %>
+                                    <% }); %>
+            </ul>
+            <% } else { %>
+                <p class="text-gray-500 text-center mt-8">No sports available.</p>
+                <% } %>
+    </div>
+</body>
+
+</html>
