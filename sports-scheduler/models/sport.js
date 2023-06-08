@@ -52,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       sport_name: DataTypes.STRING,
+      sessioncount: DataTypes.INTEGER,
       createdAt: {
         type: DataTypes.DATE,
         allowNull: true, // Allow null values for createdAt

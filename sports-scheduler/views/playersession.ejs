@@ -82,7 +82,7 @@
                     <% const sessionTime=new Date(session.time); %>
                         <% const currentTime=new Date(); %>
                             <% const isPastSession=sessionTime < currentTime; %>
-                                <% if (!hasJoined) { %>
+                                <% if (!session.cancel_status) { %>
                                     <div>
                                         <table>
                                             <thead>

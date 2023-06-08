@@ -219,6 +219,7 @@ app.post(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     const { id, sport_name } = request.body;
+    const sportname = sport_name.toLowerCase();
     console.log(request.body);
     if (!sport_name || !id) {
       request.flash("error", "Id and sport_name are required");
@@ -226,8 +227,8 @@ app.post(
     }
     try {
       await sport.addsport({
-        id: request.body.id,
-        sport_name: request.body.sport_name,
+        id: id,
+        sport_name: sportname,
         userId: request.user.id,
       });
       return response.redirect("/admin");
@@ -283,6 +284,7 @@ app.post(
       playerNames,
       time,
     } = request.body;
+    const sportname = sport_name.toLowerCase();
     console.log("checking:", request.body);
     try {
       await sportsession.addsession({
@@ -292,7 +294,11 @@ app.post(
         playerNames: playerNames,
         time: time,
         userId: request.user.id,
-        sport_name: sport_name,
+        sport_name: sportname,
+      });
+
+      await sport.increment("sessioncount", {
+        where: { sport_name: sport_name },
       });
       return response.redirect("/player");
     } catch (error) {
@@ -468,7 +474,43 @@ app.get(
   }
 );
 
-app.get("/cancelsession", (request, response) => {
-  response.redirect("/home");
+app.post(
+  "/cancel-session",
+  connectEnsureLogin.ensureLoggedIn(),
+  async (request, response) => {
+    const { sessionId, reason } = request.query;
+    // const userId = request.user.id;
+    // const username = request.user.firstName;
+    // const sessions = await sportsession.findAll({
+    //   where: {
+    //     userId: userId,
+    //   },
+    // });
+
+    try {
+      // Assuming sportsession.cancelSession is a function to handle session cancellation
+      await sportsession.cancelSession(sessionId, reason);
+      response.redirect("/player");
+    } catch (error) {
+      console.error(error);
+      response.status(500).send("Error cancelling session");
+    }
+  }
+);
+app.get("/reports", async (request, response) => {
+  const fromDate = request.query.fromDate;
+  const toDate = request.query.toDate;
+
+  try {
+    const sessions = await sportsession.getReports(fromDate, toDate);
+
+    response.render("report.ejs", { sessions });
+  } catch (error) {
+    console.log(error);
+    response
+      .status(500)
+      .json({ error: "An error occurred while fetching the reports." });
+  }
 });
+
 module.exports = app;
