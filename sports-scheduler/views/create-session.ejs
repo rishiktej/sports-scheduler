@@ -13,18 +13,10 @@
 </head>
 
 <body>
-    <h1>sport:<%= sportName %></h1>
     <div class="container mx-auto px-4">
-        <div class="mb-4">
-            <a href="/cancelsession" class="text-red-900 mb-2  hover:underline">cancel the session</a>
-        </div>
-        <h1 class="text-left mb-4">Create Session</h1>
-        <form action="/create-session" method="POST">
+        <h1 class="text-left mb-4">Create new <%=sportName%> Session</h1>
+        <form action="/create-session?sportname=<%=sportName%>" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <div class="mb-4">
-                <label for="sport_name" class="block mb-2">SportName:</label>
-                <input type="text" name="sport_name" id="sport_name" class="border border-gray-300 text-gray-900 rounded p-2 w-full" required>
-            </div>
             <div class="mb-4">
                 <label for="venue" class="block mb-2">Venue:</label>
                 <input type="text" name="venue" id="venue"

@@ -4,222 +4,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>
         <%= title %>
     </title>
-    <style>
-        /* Container styles */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Heading styles */
-        h1 {
-            text-align: center;
-            color: #333333;
-            margin-bottom: 20px;
-        }
-
-        /* Session card styles */
-        .session-card {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .session-card__item {
-            width: 300px;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px skyblue;
-            border-radius: 4px;
-            margin: 10px;
-            padding: 20px;
-        }
-
-        .session-card__item--cancelled {
-            opacity: 0.5;
-        }
-
-        .session-card__title {
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .session-card__info {
-            margin-bottom: 10px;
-        }
-
-        .session-card__label {
-            font-weight: bold;
-        }
-
-        .session-card__value {
-            margin-left: 5px;
-        }
-
-        .session-card__status {
-            text-align: center;
-            color: green;
-            font-weight: bold;
-        }
-
-        .session-card__status--inactive {
-            color: red;
-        }
-
-        .no-sessions {
-            text-align: center;
-            font-style: italic;
-            color: #888888;
-            margin-top: 20px;
-        }
-
-        .sorry-message {
-            text-align: center;
-            margin-top: 10px;
-        }
-    </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-center text-gray-700 text-3xl font-bold mb-8">
             <%= title %>
         </h1>
         <a href="/player" class="text-blue-500">Back</a>
 
         <% if (data.length===0) { %>
-            <p class="no-sessions">No sessions available.</p>
+            <p class="text-center text-gray-500 mt-8">No sessions available.</p>
             <% } else { %>
-                <% let isAnySessionCancelled=false; %>
-                    <div class="session-card">
-                        <% data.forEach(session=> { %>
-                            <% const hasJoined=session.joined ? session.joined.includes(loggedInUser) : false; %>
-                                <% if (hasJoined) { %>
-                                    <% if (session.cancel_status) { %>
-                                        <% isAnySessionCancelled=true; %>
-                                            <div class="session-card__item session-card__item--cancelled">
-                                                <h2 class="session-card__title">
-                                                    <%= session.id %>
-                                                        <% if (session.sport_name) { %>
-                                                            <span class="session-card__sport">
-                                                                <%= session.sport_name %>
-                                                            </span>
-                                                            <% } %>
-                                                </h2>
-                                                <div class="session-card__info">
-                                                    <span class="session-card__label">Venue:</span>
-                                                    <span class="session-card__value">
-                                                        <%= session.venue %>
+                <div class="flex flex-wrap mt-8">
+                    <% data.forEach(session=> { %>
+                        <% const hasJoined=session.joined ? session.joined.includes(loggedInUser) : false; %>
+                            <% if (hasJoined) { %>
+                                <% if (session.cancel_status) { %>
+                                    <div class="bg-white shadow-md rounded-lg p-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+                                        <h2 class="text-center text-lg font-bold mb-2">
+                                            <%= session.id %>
+                                                <% if (session.sport_name) { %><span class="text-sm text-gray-500 ml-2">
+                                                        <%= session.sport_name %>
                                                     </span>
-                                                </div>
-                                                <div class="session-card__info">
-                                                    <span class="session-card__label">Number of Teams:</span>
-                                                    <span class="session-card__value">
-                                                        <%= session.teamcount %>
-                                                    </span>
-                                                </div>
-                                                <div class="session-card__info">
-                                                    <span class="session-card__label">Number of Players:</span>
-                                                    <span class="session-card__value">
-                                                        <%= session.playercount %>
-                                                    </span>
-                                                </div>
-                                                <div class="session-card__info">
-                                                    <span class="session-card__label">Player Names:</span>
-                                                    <span class="session-card__value">
-                                                        <%= session.playernames %>
-                                                    </span>
-                                                </div>
-                                                <div class="session-card__info">
-                                                    <span class="session-card__label">Time:</span>
-                                                    <span class="session-card__value">
-                                                        <%= session.time.toISOString() %>
-                                                    </span>
-                                                </div>
-                                                <div class="session-card__info">
-                                                    <span class="session-card__label">Organizer:</span>
-                                                    <% const organizerIndex=userIds.indexOf(session.userId); %>
-                                                        <span class="session-card__value">
-                                                            <%= organizerIndex !==-1 ? usernames[organizerIndex]
-                                                                : 'Unknown Organizer' %>
-                                                        </span>
-                                                </div>
-                                                <div class="session-card__status">Joined</div>
-                                            </div>
-                                            <div class="sorry-message">
-                                                <p>Sorry, this session has been cancelled due to the following reason:
-                                                </p>
-                                                <p>
-                                                    <%= session.cancelled_reason %>
-                                                </p>
-                                            </div>
-                                            <% } else { %>
-                                                <div class="session-card__item">
-                                                    <h2 class="session-card__title">
-                                                        <%= session.id %>
-                                                            <% if (session.sport_name) { %>
-                                                                <span class="session-card__sport">
-                                                                    <%= session.sport_name %>
-                                                                </span>
-                                                                <% } %>
-                                                    </h2>
-                                                    <div class="session-card__info">
-                                                        <span class="session-card__label">Venue:</span>
-                                                        <span class="session-card__value">
-                                                            <%= session.venue %>
-                                                        </span>
-                                                    </div>
-                                                    <div class="session-card__info">
-                                                        <span class="session-card__label">Number of Teams:</span>
-                                                        <span class="session-card__value">
-                                                            <%= session.teamcount %>
-                                                        </span>
-                                                    </div>
-                                                    <div class="session-card__info">
-                                                        <span class="session-card__label">Number of Players:</span>
-                                                        <span class="session-card__value">
-                                                            <%= session.playercount %>
-                                                        </span>
-                                                    </div>
-                                                    <div class="session-card__info">
-                                                        <span class="session-card__label">Player Names:</span>
-                                                        <span class="session-card__value">
-                                                            <%= session.playernames %>
-                                                        </span>
-                                                    </div>
-                                                    <div class="session-card__info">
-                                                        <span class="session-card__label">Time:</span>
-                                                        <span class="session-card__value">
-                                                            <%= session.time.toISOString() %>
-                                                        </span>
-                                                    </div>
-                                                    <div class="session-card__info">
-                                                        <span class="session-card__label">Organizer:</span>
-                                                        <% const organizerIndex=userIds.indexOf(session.userId); %>
-                                                            <span class="session-card__value">
-                                                                <%= organizerIndex !==-1 ? usernames[organizerIndex]
-                                                                    : 'Unknown Organizer' %>
-                                                            </span>
-                                                    </div>
-                                                    <div class="session-card__status">Joined</div>
-                                                </div>
-                                                <% } %>
                                                     <% } %>
-                                                        <% }); %>
-                    </div>
-
-                    <% if (!isAnySessionCancelled) { %>
-                        <p class="no-sessions">No cancelled sessions.</p>
-                        <% } %>
-                            <% } %>
-    </div>
-
-    <div class="container">
-        <a href="/create-session" class="text-blue-500">Create a Session</a>
+                                        </h2>
+                                        <div class="mb-2">
+                                            <span class="font-bold">Venue:</span>
+                                            <span class="ml-1">
+                                                <%= session.venue %>
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span class="font-bold">Number of Teams:</span>
+                                            <span class="ml-1">
+                                                <%= session.teamcount %>
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span class="font-bold">Number of Players:</span>
+                                            <span class="ml-1">
+                                                <%= session.playercount %>
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span class="font-bold">Player Names:</span>
+                                            <span class="ml-1">
+                                                <%= session.playernames %>
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span class="font-bold">Time:</span>
+                                            <span class="ml-1">
+                                                <%= session.time.toISOString() %>
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span class="font-bold">Organizer:</span>
+                                            <% const organizerIndex=userIds.indexOf(session.userId); %>
+                                                <span class="ml-1">
+                                                    <%= organizerIndex !==-1 ? usernames[organizerIndex]
+                                                        : 'Unknown Organizer' %>
+                                                </span>
+                                        </div>
+                                        <div class="text-center text-green-500 font-bold">Joined</div>
+                                        <div class="text-center text-red-500 font-bold mt-4">Sorry, this session has
+                                            been cancelled due to the following reason:</div>
+                                        <div class="text-center">
+                                            <%= session.cancelled_reason %>
+                                        </div>
+                                    </div>
+                                    <% } else { %>
+                                        <div
+                                            class="bg-white shadow-md rounded-lg p-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+                                            <h2 class="text-center text-lg font-bold mb-2">
+                                                <%= session.id %>
+                                                    <% if (session.sport_name) { %><span
+                                                            class="text-sm text-gray-500 ml-2">
+                                                            <%= session.sport_name %>
+                                                        </span>
+                                                        <% } %>
+                                            </h2>
+                                            <div class="mb-2">
+                                                <span class="font-bold">Venue:</span>
+                                                <span class="ml-1">
+                                                    <%= session.venue %>
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="font-bold">Number of Teams:</span>
+                                                <span class="ml-1">
+                                                    <%= session.teamcount %>
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="font-bold">Number of Players:</span>
+                                                <span class="ml-1">
+                                                    <%= session.playercount %>
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="font-bold">Player Names:</span>
+                                                <span class="ml-1">
+                                                    <%= session.playernames %>
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="font-bold">Time:</span>
+                                                <span class="ml-1">
+                                                    <%= session.time.toLocaleString('en-US', { weekday: 'long' ,
+                                                        month: 'long' , day: 'numeric' , year: 'numeric' ,
+                                                        hour: 'numeric' , minute: 'numeric' , hour12: true }) %>
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="font-bold">Organizer:</span>
+                                                <% const organizerIndex=userIds.indexOf(session.userId); %>
+                                                    <span class="ml-1">
+                                                        <%= organizerIndex !==-1 ? usernames[organizerIndex]
+                                                            : 'Unknown Organizer' %>
+                                                    </span>
+                                            </div>
+                                            <div class="text-center text-green-500 font-bold">Joined</div>
+                                        </div>
+                                        <% } %>
+                                            <% } %>
+                                                <% }); %>
+                </div>
+                <% } %>
     </div>
 </body>
 

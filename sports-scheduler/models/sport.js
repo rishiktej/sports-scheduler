@@ -2,10 +2,10 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Sport extends Model {
+  class sport extends Model {
     static associate(models) {
       // define association here
-      Sport.belongsTo(models.Users, {
+      sport.belongsTo(models.Users, {
         foreignKey: "userId",
       });
     }
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  Sport.init(
+  sport.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -64,5 +64,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Sport;
+  return sport;
 };

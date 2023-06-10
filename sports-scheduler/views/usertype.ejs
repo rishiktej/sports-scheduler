@@ -59,8 +59,10 @@
         <div class="w-full p-4">
             <h1 class="text-3xl font-bold mb-5">Welcome <%= username %>!</h1>
             <p class="mb-4">Please select your role:</p>
-
-            <a href="/admin" class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium mb-4">Sport Organizer</a>
+            <%console.log(admin) %>
+            <%if (admin==true) { %>
+                <a href="/admin" class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium mb-4">Sport Organizer</a>
+            <%}%>
             <a href="/player" class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium ml-4 mb-4">Player</a>
         </div>
     </div>

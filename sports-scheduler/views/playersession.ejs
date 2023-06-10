@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%=csrfToken%>" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
 <style>
     /* Container styles */
     .container {
@@ -20,6 +30,7 @@
     td {
         padding: 12px 15px;
         text-align: left;
+        border-bottom: 1px solid #e2e8f0;
     }
 
     th {
@@ -67,13 +78,55 @@
         color: #888888;
         cursor: not-allowed;
     }
+
+    /* Navigation bar styles */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f3f3f3;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333333;
+        text-decoration: none;
+    }
+
+    .navbar-links a {
+        margin-left: 10px;
+        color: #333333;
+        text-decoration: none;
+    }
+
+    .navbar-links a:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <div class="container">
+    <nav class="navbar">
+        <a href="/player" class="navbar-brand">Sports-scheduler</a>
+        <div class="navbar-links">
+            <a href="/cancel-sessions" class="navbar-link">Cancelled Sessions</a>
+            <a href="/mysession">My sessions</a>
+            <a href="/joinedsessions">Joined Sessions</a>
+        </div>
+    </nav>
     <h1>
         <%= title %>
     </h1>
-    <a href="/player" class="text-blue-500">Back</a>
+    <h2 class="mb-4">Available <%= sportName %> Sessions</h2>
+    <div class="mb-4">
+        <a href="/previous-sessions?sportname=<%=sportName%>"
+            class="text-white bg-orange-600 px-5 py-1.5 rounded font-medium mr-4">Previous Sessions</a>
+        <a href="/create-session?sportname=<%=sportName%>"
+            class="text-white bg-green-600 px-5 py-1.5 rounded font-medium">Create a Session</a>
+    </div>
+    <a href="/player" class="text-black-600 mb-4">Back</a>
     <% if (data.length===0) { %>
         <p class="no-sessions">No sessions available.</p>
         <% } else { %>
@@ -82,67 +135,66 @@
                     <% const sessionTime=new Date(session.time); %>
                         <% const currentTime=new Date(); %>
                             <% const isPastSession=sessionTime < currentTime; %>
-                                <% if (!session.cancel_status) { %>
+                                <% if (!session.cancel_status && !isPastSession) { %>
                                     <div>
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Venue</th>
-                                                    <th>Number of Teams</th>
-                                                    <th>Number of Players</th>
-                                                    <th>Player Names</th>
-                                                    <th>Time</th>
-                                                    <th>Organizer</th>
-                                                    <th>Join</th>
+                                                    <th class="border-b-2">ID</th>
+                                                    <th class="border-b-2">Venue</th>
+                                                    <th class="border-b-2">Number of Teams</th>
+                                                    <th class="border-b-2">Number of Players</th>
+                                                    <th class="border-b-2">Player Names</th>
+                                                    <th class="border-b-2">Time</th>
+                                                    <th class="border-b-2">Organizer</th>
+                                                    <th class="border-b-2">Join</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr <% if (isPastSession) { %> class="past-session" <% } %>>
-                                                        <td>
-                                                            <%= session.id %>
-                                                        </td>
-                                                        <td>
-                                                            <%= session.venue %>
-                                                        </td>
-                                                        <td>
-                                                            <%= session.teamcount %>
-                                                        </td>
-                                                        <td>
-                                                            <%= session.playercount %>
-                                                        </td>
-                                                        <td>
-                                                            <%= session.playernames %>
-                                                        </td>
-                                                        <td>
-                                                            <%= session.time.toISOString() %>
-                                                        </td>
-                                                        <td>
-                                                            <% const organizerIndex=userIds.indexOf(session.userId); %>
-                                                                <%= organizerIndex !==-1 ? usernames[organizerIndex]
-                                                                    : 'Unknown Organizer' %>
-                                                        </td>
-                                                        <td>
-                                                            <% const emptySlots=session.playercount -
-                                                                (session.playernames ?
-                                                                session.playernames.split(',').length : 0); %>
-                                                                <% if (isPastSession) { %>
-                                                                    <span class="empty-slots">Past Session</span>
-                                                                    <% } else if (emptySlots> 0) { %>
-                                                                        <% if (hasJoined) { %>
-                                                                            <span class="joined-status">Joined</span>
+                                                <tr>
+                                                    <td class="border-b">
+                                                        <%= session.id %>
+                                                    </td>
+                                                    <td class="border-b">
+                                                        <%= session.venue %>
+                                                    </td>
+                                                    <td class="border-b">
+                                                        <%= session.teamcount %>
+                                                    </td>
+                                                    <td class="border-b">
+                                                        <%= session.playercount %>
+                                                    </td>
+                                                    <td class="border-b">
+                                                        <%= session.playernames %>
+                                                    </td>
+                                                    <td class="border-b">
+                                                        <%= session.time.toLocaleString('en-US', { weekday: 'long' ,
+                                                            month: 'long' , day: 'numeric' , year: 'numeric' ,
+                                                            hour: 'numeric' , minute: 'numeric' , hour12: true }) %>
+                                                    </td>
+                                                    <td class="border-b">
+                                                        <% const organizerIndex=userIds.indexOf(session.userId); %>
+                                                            <%= organizerIndex !==-1 ? usernames[organizerIndex]
+                                                                : 'Unknown Organizer' %>
+                                                    </td>
+                                                    <td class="border-b">
+                                                        <% const emptySlots=session.playercount - (session.playernames ?
+                                                            session.playernames.split(',') : 0).length; %>
+                                                            <% if (emptySlots> 0) { %>
+                                                                <% if (hasJoined) { %>
+                                                                    <span class="joined-status">Joined</span>
+                                                                    <% } else { %>
+                                                                        <a href="/join?sessionId=<%= session.id %>&username=<%= username %>"
+                                                                            class="text-blue-500">Join</a>
+                                                                        <span class="empty-slots">
+                                                                            <%= emptySlots %> empty slots
+                                                                        </span>
+                                                                        <% } %>
                                                                             <% } else { %>
-                                                                                <a
-                                                                                    href="/join?sessionId=<%= session.id %>&username=<%= username %>">Join</a>
-                                                                                <span class="empty-slots">
-                                                                                    <%= emptySlots %> empty slots
-                                                                                </span>
+                                                                                <span class="empty-slots">No slots
+                                                                                    available</span>
                                                                                 <% } %>
-                                                                                    <% } else { %>
-                                                                                        <span class="empty-slots">No
-                                                                                            slots available</span>
-                                                                                        <% } %>
-                                                        </td>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -152,6 +204,4 @@
                                             <% } %>
 </div>
 
-<div class="container">
-    <a href="/create-session" class="text-blue-500">Create a Session</a>
-</div>
+</html>
