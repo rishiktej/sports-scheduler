@@ -1,13 +1,19 @@
 {
   "name": "sports-scheduler",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "nodemon -e js,ejs",
     "start:prod": "node index.js   ",
     "pretest": "NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create",
-    "prepare": "cd .. && husky install todo-app/.husky",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test jest --detectOpenHandles",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "prettier --write ."
+    ]
   },
   "author": "rishiktejreddy <rishiktejgangadi@gmail.com>",
   "license": "ISC",
@@ -15,6 +21,7 @@
     "cheerio": "^1.0.0-rc.12",
     "eslint": "^8.41.0",
     "husky": "^8.0.3",
+    "import-local": "^3.1.0",
     "jest": "^29.5.0",
     "lint-staged": "^13.2.2",
     "nodemon": "^2.0.22",
