@@ -54,7 +54,6 @@
                                                                                 </th>
                                                                                 <th class="px-4 py-2">Number of Players
                                                                                 </th>
-                                                                                <th class="px-4 py-2">Player Names</th>
                                                                                 <th class="px-4 py-2">Time</th>
                                                                                 <th class="px-4 py-2">Organizer</th>
                                                                             </tr>
@@ -75,9 +74,6 @@
                                                                                         <%= session.playercount %>
                                                                                     </td>
                                                                                     <td class="px-4 py-2">
-                                                                                        <%= session.playernames %>
-                                                                                    </td>
-                                                                                    <td class="px-4 py-2">
                                                                                         <%= session.time.toLocaleString('en-US',
                                                                                             { weekday: 'long' ,
                                                                                             month: 'long' ,
@@ -96,6 +92,25 @@
                                                                                                 : 'Unknown Organizer' %>
                                                                                     </td>
                                                                                 </tr>
+                                                                                    <td colspan="7" class="td">
+                                                                                        <div class="flex">
+                                                                                            <% const playerNames=session.playernames.split(","); %>
+                                                                                                <h3 class="text-white bg-cyan-500 shadow-lg shadow-cyan-500/50 px-5 py-1 rounded font-medium ">PLAYERNAMES
+                                                                                                </h3>&nbsp;
+                                                                                                <% playerNames.forEach(name=> { %>
+                                                                                                    <span>
+                                                                                                        <%= name.trim() %>,
+                                                                                                    </span>
+                                                                                                    <% }); %>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <% if (session.cancel_status) { %>
+                                                                                        <tr>
+                                                                                            <td colspan="8" class="text-sm italic text-red-900">
+                                                                                                Reason: <%= session.cancelled_reason %>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <% } %>
                                                                                 <% }); %>
                                                                         </tbody>
                                                                     </table>

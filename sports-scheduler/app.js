@@ -191,7 +191,6 @@ app.get(
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     const email = request.query.email;
-    console.log("???",email)
     const un = await Users.findByPk(request.user.id);
     const username = un.firstName + " " + un.lastName;
     const user = await Users.findOne({ where: { email: email } });
@@ -325,11 +324,16 @@ app.get(
   "/player",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
+    const loggedInUser = request.user;
+    const Email = loggedInUser.email;
+    const admin = loggedInUser.admin;
     const allsports = await sport.getsports();
     try {
       response.render("player", {
         title: "PLAYER",
         allsports: allsports,
+        Email,
+        admin,
         csrfToken: request.csrfToken(),
       });
     } catch (error) {
@@ -542,5 +546,43 @@ app.get(
     }
   }
 );
+app.get("/change-password",connectEnsureLogin.ensureLoggedIn(),(request,response)=>{
+  try{ response.render("changepassword.ejs",{csrfToken: request.csrfToken(),})}
+  catch (error){
+console.log(error);
+response.status(500).send("Internal Server Error");
+  }
+});
+app.post("/change-password", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
+  const loggedInUser = request.user.id;
+  const currentPassword = request.body.currentPassword;
+  const newPassword = request.body.newPassword;
+  const confirmPassword = request.body.confirmPassword;
+  const hashedPwd = await bcrypt.hash(newPassword, saltRounds);
+
+  try {
+    if (newPassword === confirmPassword && newPassword !== currentPassword) {
+      const user = await Users.findByPk(loggedInUser);
+      if (user) {
+        const isCurrentPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+        if (isCurrentPasswordCorrect) {
+          user.password = hashedPwd;
+          await user.save();
+          response.redirect("/player");
+            response.write('<script>alert("Your password has been changed successfully.");</script>');
+    response.end();
+        } else {
+          response.render("changepassword", { error: "Incorrect current password" });
+        }
+      } else {
+        response.render("changepassword", { error: "User not found" });
+      }
+    } else {
+      response.render("changepassword", { error: "New passwords do not match or match the current password" });
+    }
+  } catch (error) {
+    response.render("changepassword", { error: "An error occurred while changing the password" });
+  }
+});
 
 module.exports = app;

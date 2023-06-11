@@ -144,7 +144,6 @@
                                                     <th class="border-b-2">Venue</th>
                                                     <th class="border-b-2">Number of Teams</th>
                                                     <th class="border-b-2">Number of Players</th>
-                                                    <th class="border-b-2">Player Names</th>
                                                     <th class="border-b-2">Time</th>
                                                     <th class="border-b-2">Organizer</th>
                                                     <th class="border-b-2">Join</th>
@@ -163,9 +162,6 @@
                                                     </td>
                                                     <td class="border-b">
                                                         <%= session.playercount %>
-                                                    </td>
-                                                    <td class="border-b">
-                                                        <%= session.playernames %>
                                                     </td>
                                                     <td class="border-b">
                                                         <%= session.time.toLocaleString('en-US', { weekday: 'long' ,
@@ -194,8 +190,20 @@
                                                                                 <span class="empty-slots">No slots
                                                                                     available</span>
                                                                                 <% } %>
-                                                    </td>
+                                                    </td> 
                                                 </tr>
+                                                 <td colspan="7" class="td">
+                                                        <div class="flex">
+                                                            <% const playerNames=session.playernames.split(","); %>
+                                                                <h3 class="text-white bg-cyan-500 shadow-lg shadow-cyan-500/50 px-5 py-1.5 rounded font-medium ">PLAYERNAMES
+                                                                </h3>&nbsp;
+                                                                <% playerNames.forEach(name=> { %>
+                                                                    <span>
+                                                                        <%= name.trim() %>,
+                                                                    </span>
+                                                                    <% }); %>
+                                                        </div>
+                                                    </td>
                                             </tbody>
                                         </table>
                                     </div>
