@@ -86,6 +86,14 @@ passport.deserializeUser((id, done) => {
     });
 });
 
+function requireadmin(req, res, next) {
+  if (req.user && req.user.admin === true) {
+    return next();
+  } else {
+    res.status(401).json({ message: 'Unauthorized user.' });
+  }
+}
+
 app.get("/", async (request, response) => {
   if (request.accepts("html")) {
     response.render("index.ejs", {
@@ -180,9 +188,6 @@ app.get("/signout", (request, response) => {
   });
 });
 
-app.get("/cancelsession", async (request, response) => {
-  response.redirect("/admin");
-});
 
 app.get(
   "/usertype",
@@ -202,7 +207,7 @@ app.get(
 );
 
 app.get(
-  "/admin",
+  "/admin",requireadmin,
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     const loggedInUser = request.user.id;
@@ -490,7 +495,7 @@ app.post(
   }
 );
 app.get(
-  "/reports",
+  "/reports",requireadmin,
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
     const fromDate = request.query.fromDate;

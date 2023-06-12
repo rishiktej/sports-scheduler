@@ -18,7 +18,7 @@ const login = async (agent, username, password) => {
     password: password,
     _csrf: csrfToken,
   });
-};
+}
 
 describe("sports-scheduler Application", function () {
   beforeAll(async () => {
@@ -55,4 +55,27 @@ describe("sports-scheduler Application", function () {
     res = await agent.get("/player");
     expect(res.statusCode).toBe(302);
   });
+  
+   test(" Creating a sport", async () => {
+    const agent = request.agent(server);
+    await login(agent, "user.a@test.com", "12345678");
+    const res = await agent.get("/admin");
+    const csrfToken = extractCsrfToken(res);
+    const response = await agent.post("/admin").send({
+      id:"1",
+      sport_name: "football",
+      _csrf: csrfToken,
+    });
+    expect(response.statusCode).toBe(302);
+     expect(response.header.location).toBe("/admin");
+
+  // Checking if the sport was added to the database
+  const addedSport = await db.sport.findOne({ where: { id: "1" } });
+  expect(addedSport).not.toBeNull();
+  expect(addedSport.sport_name).toBe("football"); // Assuming the sport_name is stored in lowercase
+
+  // Cleaning up - delete the added sport
+  await addedSport.destroy();
+  });
+
 });
