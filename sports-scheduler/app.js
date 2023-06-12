@@ -289,15 +289,18 @@ app.post(
     const sport_name = request.query.sportname;
     const { venue, numberofTeams, numberofplayers, playerNames, time } =
       request.body;
+      const istDateTime = new Date(time);
+const utcDateTime = new Date(istDateTime.getTime() - (istDateTime.getTimezoneOffset() * 60000));
+
+const utcTime = utcDateTime.toISOString();
     const sportname = sport_name.toLowerCase();
-    console.log("checking:", request.body);
     try {
       await sportsession.addsession({
         venue: venue,
         numberofTeams: numberofTeams,
         numberofplayers: numberofplayers,
         playerNames: playerNames,
-        time: time,
+        time: utcTime,
         userId: request.user.id,
         sport_name: sportname,
       });
