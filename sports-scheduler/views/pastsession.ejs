@@ -75,6 +75,8 @@
                 <% const pastSessions=data.filter(session=> {
                     const sessionTime = new Date(session.time);
                     const currentTime = new Date();
+                    currentTime.setHours(currentTime.getHours() + 5);
+                    currentTime.setMinutes(currentTime.getMinutes() + 30);
                     return sessionTime < currentTime && session.sport_name===sportname; }); %>
                         <% if (pastSessions.length===0) { %>
                             <p class="no-sessions">No past sessions available for <%= sportname %>.</p>
