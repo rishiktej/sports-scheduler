@@ -75,16 +75,7 @@
                 <% const pastSessions=data.filter(session=> {
                     const sessionTime = new Date(session.time);
                     const currentTime = new Date();
-                    const currenttime = new Date(
-                    Date.UTC(
-                    currentTime.getUTCFullYear(),
-                    currentTime.getUTCMonth(),
-                    currentTime.getUTCDate(),
-                    currentTime.getUTCHours(),
-                    currentTime.getUTCMinutes(),
-                    currentTime.getUTCSeconds()
-                    ));
-                    return sessionTime < currenttime && session.sport_name===sportname; }); %>
+                    return sessionTime < currentTime && session.sport_name===sportname; }); %>
                         <% if (pastSessions.length===0) { %>
                             <p class="no-sessions">No past sessions available for <%= sportname %>.</p>
                             <% } else { %>

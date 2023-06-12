@@ -133,17 +133,8 @@
             <% data.forEach(session=> { %>
                 <% const hasJoined=session.joined ? session.joined.includes(loggedInUser) : false; %>
                     <% const sessionTime=new Date(session.time); %>
-                    <% const currentTime = new Date(); %>
-                        <% const currenttime = new Date(
-  Date.UTC(
-    currentTime.getUTCFullYear(),
-    currentTime.getUTCMonth(),
-    currentTime.getUTCDate(),
-    currentTime.getUTCHours(),
-    currentTime.getUTCMinutes(),
-    currentTime.getUTCSeconds()
-  )) %>
-                            <% const isPastSession=sessionTime < currenttime; %>
+                        <% const currentTime=new Date(); %>
+                            <% const isPastSession=sessionTime < currentTime; %>
                                 <% if (!session.cancel_status && !isPastSession) { %>
                                     <div>
                                         <table>
