@@ -15,41 +15,44 @@
 <body>
     <div class="container mx-auto px-4">
         <h1 class="text-left mb-4">Create new <%=sportName%> Session</h1>
-        <form action="/create-session?sportname=<%=sportName%>" method="POST">
+        <form action="/create-session?sportname=<%=sportName%>" method="post">
+        <div class="py-3">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="mb-4">
                 <label for="venue" class="block mb-2">Venue:</label>
-                <input type="text" name="venue" id="venue"
-                    class="border border-gray-300 text-gray-900 rounded p-2 w-full" required>
+                <input type="text" name="venue" id="venue" class="border border-gray-300 text-gray-900 rounded p-2 w-full"
+                    required>
             </div>
-
+        
             <div class="mb-4">
                 <label for="numberOfTeams" class="block mb-2">Number of Teams:</label>
                 <input type="number" name="numberofTeams" id="numberofTeams"
                     class="border border-gray-300 text-gray-900 rounded p-2 w-full" required>
             </div>
-
+        
             <div class="mb-4">
                 <label for="playersPerTeam" class="block mb-2">Number of Players:</label>
                 <input type="number" name="numberofplayers" id="numberofplayers"
                     class="border border-gray-300 text-gray-900 rounded p-2 w-full" required>
             </div>
-
+        
             <div class="mb-4">
                 <label for="playerNames" class="block mb-2">Player Names (separated by commas):</label>
                 <input type="text" name="playerNames" id="playerNames"
                     class="border border-gray-300 text-gray-900 rounded p-2 w-full" required>
             </div>
-
+        
             <div class="mb-4">
                 <label for="time" class="block mb-2">Date and Time of the Sport:</label>
                 <input type="datetime-local" name="time" id="time"
                     class="border border-gray-300 text-gray-900 rounded p-2 w-full" required>
             </div>
-
+        
             <div class="flex-none">
-                <button type="submit" class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium mb-2" >Create</button>
+                <button type="submit" class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium mb-2">Create</button>
             </div>
+        </div>
+
         </form>
     </div>
 </body>
