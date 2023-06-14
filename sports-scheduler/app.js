@@ -559,6 +559,7 @@ app.get(
     }
   }
 );
+
 app.post(
   "/change-password",
   connectEnsureLogin.ensureLoggedIn(),
@@ -581,29 +582,24 @@ app.post(
             user.password = hashedPwd;
             await user.save();
             response.redirect("/player");
-            response.write(
-              '<script>alert("Your password has been changed successfully.");</script>'
-            );
-            response.end();
           } else {
-            response.render("changepassword", {
-              error: "Incorrect current password",
-            });
+            request.flash("error", "Incorrect current password");
+            response.redirect("/change-password");
           }
         } else {
-          response.render("changepassword", { error: "User not found" });
+          request.flash("error", "User not found");
+          response.redirect("/change-password");
         }
       } else {
-        response.render("changepassword", {
-          error: "New passwords do not match or match the current password",
-        });
+        request.flash("error", "New passwords do not match or match the current password");
+        response.redirect("/change-password");
       }
     } catch (error) {
-      response.render("changepassword", {
-        error: "An error occurred while changing the password",
-      });
+      console.log(error);
+      response.status(500).send("Internal Server Error");
     }
   }
 );
+
 
 module.exports = app;
