@@ -84,11 +84,8 @@
                                             </div>
                                             <div class="mb-2">
                                                 <span class="font-bold">Organizer:</span>
-                                                <% const organizerIndex=userIds.indexOf(session.userId); %>
-                                                    <span class="ml-1">
-                                                        <%= organizerIndex !==-1 ? usernames[organizerIndex]
-                                                            : 'Unknown Organizer' %>
-                                                    </span>
+                                                <% const organizer=userIdUsernameArray.find(user=> user.userId === session.userId); %>
+                                                    <%= organizer ? organizer.username : 'Unknown Organizer' %>
                                             </div>
                                             <div class="text-center text-green-500 font-bold">Joined</div>
                                             <div class="text-center text-red-500 font-bold mt-4">Sorry, this session has
@@ -148,11 +145,9 @@
                                                 </div>
                                                 <div class="mb-2">
                                                     <span class="font-bold">Organizer:</span>
-                                                    <% const organizerIndex=userIds.indexOf(session.userId); %>
-                                                        <span class="ml-1">
-                                                            <%= organizerIndex !==-1 ? usernames[organizerIndex]
-                                                                : 'Unknown Organizer' %>
-                                                        </span>
+                                                    <% const organizer=userIdUsernameArray.find(user=> user.userId === session.userId); %>
+                                                        <%= organizer ? organizer.username : 'Unknown Organizer' %>
+        
                                                 </div>
                                                 <div class="text-center text-green-500 font-bold">Joined</div>
                                             </div>

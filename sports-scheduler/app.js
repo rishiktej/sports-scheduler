@@ -364,21 +364,23 @@ app.get(
     const sessions = await sportsession.getsession(sportName);
     console.log(sessions);
     const userIds = sessions.map((session) => session.userId);
+    console.log(userIds);
     const users = await Users.findAll({
       where: {
         id: userIds,
       },
     });
     console.log(users);
-    const usernames = users.map((user) => `${user.firstName} ${user.lastName}`);
-    console.log(usernames);
+    const userIdUsernameArray = users.map((user) => {
+      return { userId: user.id, username: `${user.firstName} ${user.lastName}` };
+    });
     try {
       response.render("playersession.ejs", {
         title: "Sport Sessions",
         data: sessions,
         username,
         sportName,
-        usernames,
+        userIdUsernameArray,
         loggedInUser,
         userIds,
         csrfToken: request.csrfToken(),
@@ -445,12 +447,14 @@ app.get(
         id: userIds,
       },
     });
-    const usernames = users.map((user) => `${user.firstName} ${user.lastName}`);
+    const userIdUsernameArray = users.map((user) => {
+      return { userId: user.id, username: `${user.firstName} ${user.lastName}` };
+    });
     try {
       response.render("cancelled-session.ejs", {
         data: sessions,
         username,
-        usernames,
+        userIdUsernameArray,
         userIds,
         csrfToken: request.csrfToken(),
       });
@@ -475,14 +479,16 @@ app.get(
         id: userIds,
       },
     });
-    const usernames = users.map((user) => `${user.firstName} ${user.lastName}`);
+    const userIdUsernameArray = users.map((user) => {
+      return { userId: user.id, username: `${user.firstName} ${user.lastName}` };
+    });
     response.render("joinedsessions", {
       title: "Joined Sessions",
       data: joinedSessions,
       loggedInUser: loggedInUser,
       sports,
       userIds,
-      usernames,
+      userIdUsernameArray,
       csrfToken: request.csrfToken(),
     });
   }
@@ -540,13 +546,15 @@ app.get(
         id: userIds,
       },
     });
-    const usernames = users.map((user) => `${user.firstName} ${user.lastName}`);
+     const userIdUsernameArray = users.map((user) => {
+      return { userId: user.id, username: `${user.firstName} ${user.lastName}` };
+    });
     try {
       response.render("pastsession.ejs", {
         data: sessions,
         sportname,
         username,
-        usernames,
+        userIdUsernameArray,
         userIds,
         csrfToken: request.csrfToken(),
       });

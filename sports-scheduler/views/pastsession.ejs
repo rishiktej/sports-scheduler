@@ -115,9 +115,8 @@
                                                             hour: 'numeric' , minute: 'numeric' , hour12: true }) %>
                                                     </td>
                                                     <td class="td">
-                                                        <% const organizerIndex=userIds.indexOf(session.userId); %>
-                                                            <%= organizerIndex !==-1 ? usernames[organizerIndex]
-                                                                : 'Unknown Organizer' %>
+                                                        <% const organizer=userIdUsernameArray.find(user=> user.userId === session.userId); %>
+                                                            <%= organizer ? organizer.username : 'Unknown Organizer' %>
                                                     </td>
                                                     <td class="td">
                                                         <%= session.sport_name %>

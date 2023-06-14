@@ -171,9 +171,8 @@ currentTime.setMinutes(currentTime.getMinutes() + 30); %>
                                                             hour: 'numeric' , minute: 'numeric' , hour12: true }) %>
                                                     </td>
                                                     <td class="border-b">
-                                                        <% const organizerIndex=userIds.indexOf(session.userId); %>
-                                                            <%= organizerIndex !==-1 ? usernames[organizerIndex]
-                                                                : 'Unknown Organizer' %>
+                                                            <% const organizer=userIdUsernameArray.find(user=> user.userId === session.userId); %>
+                                                                <%= organizer ? organizer.username : 'Unknown Organizer' %>
                                                     </td>
                                                     <td class="border-b">
                                                         <% const emptySlots=session.playercount - (session.playernames ?

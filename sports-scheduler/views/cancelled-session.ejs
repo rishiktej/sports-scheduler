@@ -84,12 +84,8 @@
                                                                                             true }) %>
                                                                                     </td>
                                                                                     <td class="px-4 py-2">
-                                                                                        <% const
-                                                                                            organizerIndex=userIds.indexOf(session.userId);
-                                                                                            %>
-                                                                                            <%= organizerIndex !==-1 ?
-                                                                                                usernames[organizerIndex]
-                                                                                                : 'Unknown Organizer' %>
+                                                                                        <% const organizer=userIdUsernameArray.find(user=> user.userId === session.userId); %>
+                                                                                            <%= organizer ? organizer.username : 'Unknown Organizer' %>
                                                                                     </td>
                                                                                 </tr>
                                                                                     <td colspan="7" class="td">
