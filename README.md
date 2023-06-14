@@ -1,1 +1,2 @@
-# sports-scheduler
+SPORTS SCHEDULER APPLICATION
+here is the home page:
