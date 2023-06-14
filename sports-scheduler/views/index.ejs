@@ -6,16 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sports-Scheduler App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url("https://th.bing.com/th/id/OIG.WbWECEZnnrkDCfARuW1g?pid=ImgGn");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+        }
+
+        .content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body class="bg-white-500">
     <div class="container mx-auto px-4 md:px-8">
-        <header class="py-4">
-            <h1 class="text-3xl font-semibold text-gray-900">Sports-Scheduler</h1>
-            <p class="text-sm text-gray-500">A simple and easy-to-use sports scheduler</p>
+        <header class="py-4 truncate">
+            <h1 class="text-3xl font-semibold text-black">Sports-Scheduler</h1>
+            <p class="text-sm text-black">A simple and easy-to-use sports scheduler</p>
         </header>
         <main class="mx-auto max-w-7xl mt-4">
-            <section class="py-4">
+            <section class="py-4 content">
                 <h2 class="text-xl font-semibold text-gray-900">Welcome to Sports-Scheduler</h2>
                 <p class="text-sm text-gray-500">Sports-Scheduler is a simple and easy-to-use sports scheduler that
                     allows you to easily keep track of your sports schedules.</p>
@@ -29,7 +44,8 @@
                 </ul>
                 <p class="text-sm text-#9333ea-500">If you don't have an account yet, <a href="/signup"
                         class="text-white bg-green-600 px-3 py-1 rounded font-medium">sign up here</a>.</p><br>
-                <p class="text-sm text-#9333ea-500">If you already had an account, <a href="/login" class="text-white bg-green-600 px-3 py-1 rounded font-medium">Log in
+                <p class="text-sm text-#9333ea-500">If you already had an account, <a href="/login"
+                        class="text-white bg-green-600 px-3 py-1 rounded font-medium">Log in
                         here</a>.</p>
             </section>
         </main>
