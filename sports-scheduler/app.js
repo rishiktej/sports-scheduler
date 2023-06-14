@@ -294,12 +294,20 @@ app.post(
     const sport_name = request.query.sportname;
     const { venue, numberofTeams, numberofplayers, playerNames, time } =
       request.body;
-      const istDateTime = new Date(time);
-const utcDateTime = new Date(istDateTime.getTime() - (istDateTime.getTimezoneOffset() * 60000));
-
-const utcTime = utcDateTime.toISOString();
+    const istDateTime = new Date(time);
+    const utcDateTime = new Date(istDateTime.getTime() - (istDateTime.getTimezoneOffset() * 60000));
+    const utcTime = utcDateTime.toISOString();
     const sportname = sport_name.toLowerCase();
+    const playernameslength = (playerNames.split(',')).length;
+
+
     try {
+      if (playernameslength
+ > numberofplayers) {
+        request.flash("error", "Adding more players than specified");
+        return response.redirect(`/create-session?sportname=${sportname}`);
+      }
+
       await sportsession.addsession({
         venue: venue,
         numberofTeams: numberofTeams,
@@ -320,6 +328,7 @@ const utcTime = utcDateTime.toISOString();
     }
   }
 );
+
 
 app.get(
   "/player",

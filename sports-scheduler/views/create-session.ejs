@@ -52,8 +52,14 @@
                 <button type="submit" class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium mb-2">Create</button>
             </div>
         </div>
-
         </form>
+            <% if (messages && messages.error && messages.error.length> 0) { %>
+                <% messages.error.forEach(function(error) { %>
+                    <li>
+                        <%= error %>
+                    </li>
+                    <% }); %>
+                        <% } %>
     </div>
 </body>
 
